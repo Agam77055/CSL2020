@@ -31,86 +31,87 @@
 using namespace std;
 
 int IndicesIncrementAndEvenCounter(vector<vector<int>>* index, int n, int m, int index_len){
-    int evenCount = 0;
-    // Write your solving function here
-    //increment the rows and columns of the indices and then return the count of even values 
-    vector<vector<int>> mat(n, vector<int>(m, 0));
+    // int evenCount = 0;
+    // // Write your solving function here
+    // //increment the rows and columns of the indices and then return the count of even values 
+    // vector<vector<int>> mat(n, vector<int>(m, 0));
     
-    // // vector<int> row(n, 0);
-    // // vector<int> col(m, 0);
+    // // // vector<int> row(n, 0);
+    // // // vector<int> col(m, 0);
     
     
     
-    for (int z = 0; z < index_len; z++)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            mat[i][(*index)[z][1]]++;
-        }
-        
-        for (int i = 0; i < m; i++)
-        {
-            mat[(*index)[z][0]][i]++;
-        }
-        
-        // row[(*index)[z][1]]++;
-        // col[(*index)[z][0]]++;
-        
-        // mat[(*index)[z][0]][(*index)[z][1]]++;
-    }
-    
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            // int val = row[i] + col[j];
-            
-            // if (val % 2 == 0)
-            // {
-            //     evenCount++;
-            // }
-            
-            if (mat[i][j] % 2 == 0)
-            {
-                evenCount++;
-            }
-            
-            // cout << mat[i][j] << " ";
-        }
-        
-        // cout << endl;
-    }
-    
-    // bool rows[n], cols[m];
-    
-    // for (int i = 0; i < index_len; i++)
+    // for (int z = 0; z < index_len; z++)
     // {
-    //     rows[(*index)[i][0]] ^= true;
-    //     cols[(*index)[i][1]] ^= true;
+    //     for (int i = 0; i < n; i++)
+    //     {
+    //         mat[i][(*index)[z][1]]++;
+    //     }
+        
+    //     for (int i = 0; i < m; i++)
+    //     {
+    //         mat[(*index)[z][0]][i]++;
+    //     }
+        
+    //     // row[(*index)[z][1]]++;
+    //     // col[(*index)[z][0]]++;
+        
+    //     // mat[(*index)[z][0]][(*index)[z][1]]++;
     // }
-    
-    // int rowsEven = 0, colsEven = 0;
     
     // for (int i = 0; i < n; i++)
     // {
-    //     if (rows[i])
+    //     for (int j = 0; j < m; j++)
     //     {
-    //         rowsEven++;
+    //         // int val = row[i] + col[j];
+            
+    //         // if (val % 2 == 0)
+    //         // {
+    //         //     evenCount++;
+    //         // }
+            
+    //         if (mat[i][j] % 2 == 0)
+    //         {
+    //             evenCount++;
+    //         }
+            
+    //         // cout << mat[i][j] << " ";
     //     }
+        
+    //     // cout << endl;
     // }
     
-    // for (int i = 0; i < m; i++)
-    // {
-    //     if (cols[i])
-    //     {
-    //         colsEven++;
-    //     }
-    // }
+    bool rows[n] = {false};
+    bool cols[m] = {false};
     
-    // return rowsEven*colsEven + (n-rowsEven)*(m-colsEven);
+    for (int i = 0; i < index_len; i++)
+    {
+        rows[(*index)[i][0]] ^= true;
+        cols[(*index)[i][1]] ^= true;
+    }
+    
+    int rowsEven = 0, colsEven = 0;
+    
+    for (int i = 0; i < n; i++)
+    {
+        if (rows[i])
+        {
+            rowsEven++;
+        }
+    }
+    
+    for (int i = 0; i < m; i++)
+    {
+        if (cols[i])
+        {
+            colsEven++;
+        }
+    }
+    
+    return rowsEven*colsEven + (n-rowsEven)*(m-colsEven);
     
     
-    return evenCount;
+    // return evenCount;
 }
 
 
@@ -119,11 +120,11 @@ int main(){
     int index_len;
     cin>>n>>m>>index_len;
     
-    if (n <= 0 || m <= 0 || index_len < 0)
-    {
-        cout << 0;
-        return 0;
-    }
+    // if (n <= 0 || m <= 0 || index_len < 0)
+    // {
+    //     cout << 0;
+    //     return 0;
+    // }
     
     vector<vector<int>> index(index_len, vector<int>(2, 0));
     
@@ -134,11 +135,11 @@ int main(){
             cin>>index[i][j];
         }
         
-        if (index[i][0] >= n || index[i][1] >= m)
-        {
-            // cout << 0;
-            return 0;
-        }
+        // if (index[i][0] >= n || index[i][1] >= m)
+        // {
+        //     // cout << 0;
+        //     return 0;
+        // }
     }
     
     // Write your code for taking input (n,m,index_len,index) here:
