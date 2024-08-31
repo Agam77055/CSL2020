@@ -37,43 +37,68 @@ private:
 
 public:
     // Function to initialize an empty stack
-    void createStack() {
-        
+    void createStack(int size) {
+        elements.reserve(size);
     }
 
     // Function to check if the stack is empty
     bool isEmpty() const {
-        
+        return elements.empty();
     }
 
     // Function to push an integer onto the stack
     void push(int value) {
-        
+        elements.push_back(value);
     }
 
     // Function to pop the top element from the stack
     int pop() {
+        int top = elements.back();
+        elements.pop_back();
         
+        return top;
     }
 
     // Function to print the elements of the stack
     void printStack() const {
-        
+        for (int i = 0; i < (int) elements.size(); i++)
+        {
+            cout << elements[i] << " ";
+        }
     }
 
     // Function to return the top element of the stack
     int top() const {
-        
+        return elements.back();
     }
 
     // Recursive function to insert an element at the correct position in a sorted stack
     void sortedInsert(int value) {
-        
+        if (isEmpty() || value >= top())
+        {
+            push(value);
+        }
+        else
+        {
+            int temp = pop();
+            
+            sortedInsert(value);
+            
+            push(temp);
+        }
     }
 
     // Recursive function to sort the given stack in ascending order
     void sortStack() {
+        if (isEmpty())
+        {
+            return;
+        }
         
+        int temp = pop();
+        sortStack();
+        
+        sortedInsert(temp);
     }
 };
 
@@ -82,9 +107,9 @@ int main() {
     while(t--){
         Stack stack;
 
-        stack.createStack();
-        
         int n; cin >> n;
+        stack.createStack(n);
+        
         for(int i=0; i<n; i++){
             int k; cin >> k;
             stack.push(k);
@@ -94,6 +119,8 @@ int main() {
         stack.sortStack();
     
         stack.printStack();
+        
+        cout << endl;
     }
     return 0;
 }
