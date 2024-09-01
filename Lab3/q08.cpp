@@ -1,9 +1,13 @@
 // You are given a stack of N integers such that the leftmost element is on the top and the rightmost element is at the bottom of the stack.
-// In one operation, you can either pop an element from the stack or push any popped element into the stack. You need to maximize the top element of the stack after performing exactly K operations. If the stack becomes empty after performing K operations and there is no other way for the stack to be non-empty, print -1.
+// In one operation, you can either pop an element from the stack or push any popped element into the stack. 
+// You need to maximize the top element of the stack after performing exactly K operations. 
+// If the stack becomes empty after performing K operations and there is no other way for the stack to be non-empty, print -1.
 
 // Input format:
 // The first line of input consists of two space-separated integers N and K.
-// The second line of input consists N space-separated integers denoting the elements of the stack. The first element represents the top of the stack and the last element represents the bottom of the stack.
+// The second line of input consists N space-separated integers denoting the elements of the stack. 
+// The first element represents the top of the stack and the last element represents the bottom of the stack.
+
 // Output format :
 // Print the maximum possible top element of the stack after performing exactly K operations.
 
@@ -25,17 +29,23 @@ class Stack{
 public:
     vector<ll> v;
     
+    Stack(int size)
+    {
+        v.reserve(size);
+    }
+    
     void push(ll val){
         v.push_back(val);  
     }
     
     void pop(){
         if (empty()) return;
-        v.erase(v.begin());
+        v.pop_back();
     }
     
-    ll top(){
-        return v.front();
+    ll peek(){
+        if (empty()) return -1;
+        return v.back();
     }
     
     ll size(){
@@ -56,7 +66,8 @@ int main(){
     int n, k;
     cin>>n>>k;
     
-    Stack st;
+    Stack st1(n);
+    Stack st2(n);
     
     // take input elements and push them in stack
     // remember the leftmost elem should be at the top so you need to push them in reverse order
@@ -66,36 +77,51 @@ int main(){
         int num;
         cin>>num;
         
-        st.push(num);
+        st1.push(num);
     }
     
-    for (int i = 0; i < k; i++)
+    while (!st1.empty())
     {
-        ll num = st.top();
-        st.pop();
+        st2.push(st1.peek());
+        st1.pop();
         
-        if (i == k-1)
+        // cout << st2.peek() << " ";
+    }
+    
+    
+    for (int i = 0; i < n; i++)
+    {
+        if (k > 0)
         {
-            st.v.insert(st.v.begin(), mx);
+            if (k % 2 == 0)
+            {
+                mx = max(mx, st2.peek());
+                st2.pop();
+                // cout << mx << " ";
+            }
+            else st2.pop();
+            
+            k--;
+        }
+        else
+        {
             break;
         }
-        
-        if (mx < num)
-        {
-            mx = num;
-        }
-        
-        // cout << st.top() << " ";
+       
     }
     
-    // handle base cases
+    // handle base case
+    if (!st2.empty())
+    {
+        mx = max(mx, st2.peek());
+        // cout << st2.peek();
+    }
     
-    if (st.empty())
-        {
-            cout << -1 << endl;
-            return 0;
-        }
-
+    if (mx == -1e9)
+    {
+        mx = -1;
+    }
+    
     // write the main solution code
 
 
