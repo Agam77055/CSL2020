@@ -95,8 +95,17 @@ class LRUCache{
         if (isEmpty()) {std::cout << "Stack underflow" << std::endl ; exit(EXIT_FAILURE); }
         Node* popped = tail;
         int val = popped->key;
-        tail = tail->prev;
-        tail->next = nullptr;
+        if (popped->prev)
+        {
+            tail = popped->prev;
+            tail->next = nullptr;
+        }
+        else
+        {
+            head = nullptr;
+            tail = nullptr;
+        }
+        
         delete popped;
         size--;
         return val;
@@ -107,11 +116,96 @@ class LRUCache{
     
     int get(int x){
         // implement your get method here
+        Node* n = head;
+        
+        while (n != nullptr)
+        {
+            if (n->key == x)
+            {
+                if (n != head)
+                {
+                    n->prev->next = n->next;
+                    if (n->next)
+                    {
+                        n->next->prev = n->prev;
+                    }
+                    else
+                    {
+                        tail = n->prev;
+                    }
+                    
+                    n->next = head;
+                    head->prev = n;
+                    head = n;
+                    n->prev = nullptr;
+                    
+                    // std::cout << head->key << " " << head->value << std::endl;
+                }
+                
+                return n->value;
+            }
+            
+            n = n->next;
+        }
+        
+        return -1;
+        
     }
     
     void put(int x, int y)
     {
         // implement your put method here
+        Node* n = head;
+        
+        while (n != nullptr)
+        {
+            if (n->key == x)
+            {
+                // std::cout << n->key << " " << n->value << std::endl;
+                n->value = y;
+                
+                if (n != head)
+                {
+                    
+                    n->prev->next = n->next;
+                    if (n->next)
+                    {
+                        n->next->prev = n->prev;
+                    }
+                    else
+                    {
+                        tail = n->prev;
+                    }
+                    
+                    n->next = head;
+                    head->prev = n;
+                    head = n;
+                    n->prev = nullptr;
+                    
+                    // std::cout << head->key << " " << head->value << std::endl;
+                }
+                
+                return;
+            }
+            
+            n = n->next;
+        }
+        
+        if (size != maxsize)
+        {
+            enqueue(x, y);
+            // std::cout << head->key << " " << head->value << std::endl;
+        }
+        else
+        {
+            if (size == 0) return;
+            
+            // std::cout << head->key << " " << head->value << std::endl;
+            dequeue();
+            enqueue(x, y);
+            
+            // std::cout << size << std::endl;
+        }
         return;
     }
 };
