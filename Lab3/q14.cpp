@@ -16,6 +16,7 @@
 #include <string>
 #include <stack>
 #include <algorithm> // For std::reverse
+using namespace std;
 
 // Template class to handle the removal of k digits
 class KDigitsRemover {
@@ -25,7 +26,48 @@ public:
         : num(number), k(removeCount) {}
 
     // Public method to perform the removal of k digits
-    std::string removeKdigits() {
+    string removeKdigits() {
+        string x = num;
+        // reverse(x.begin(), x.end());
+        
+        stack<char> st;
+        
+        for(int i = 0; i < (int) x.size(); i++)
+        {
+            char c = x[i];
+            
+            while (!st.empty() && k > 0 && st.top() > c)
+            {
+                st.pop();
+                k--;
+            }
+            
+            st.push(c);
+        }
+        
+        while (!st.empty() && k > 0)
+        {
+            st.pop();
+            k--;
+        }
+        
+        string smallNumber;
+        
+        while(!st.empty())
+        {
+            smallNumber = st.top() + smallNumber;
+            st.pop();
+        }
+        
+        while (smallNumber.size() > 1 && smallNumber[0] == '0')
+        {
+            smallNumber.erase(smallNumber.begin());
+        }
+        
+        if (!smallNumber.empty())
+        {
+            return smallNumber;
+        }
         
     }
 
